@@ -20,7 +20,6 @@
 #'
 #' @importClassesFrom VariantAnnotation VCF
 #' @importClassesFrom Rsamtools FaFile
-#' @importFrom GenomicRanges newGRanges
 #'
 #' @examples
 #' library(VariantAnnotation)

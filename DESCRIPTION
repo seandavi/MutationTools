@@ -13,5 +13,6 @@ Imports:
     IRanges,
     VariantAnnotation,
     Rsamtools,
-    GenomicRanges
+    GenomicRanges,
+    Biostrings
 License: GPL-3

@@ -1,6 +1,5 @@
-#'
-#'
-#'
+#' Make a kataegis plot from a set of variants
+#' 
 #' @importFrom Biostrings complement
 kataegisPlot <- function(vcf) {
     vcfsimple = vcf[isSNV(vcf)]
