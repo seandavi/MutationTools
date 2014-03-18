@@ -11,5 +11,5 @@ kataegisPlot <- function(vcf) {
     mcols(vardf)$ref[mcols(vardf)$ref %in% c('G','T')] = complement(mcols(vardf)$ref[mcols(vardf)$ref %in% c('G','T')])
     x = data.frame(mutation=paste(mcols(vardf)$ref,mcols(vardf)$alt,sep=" > "),
         distance=d)
-    return(x)
+    ggplot(x,aes(x=seq_along(distance),y=distance)) + geom_point(aes(color=mutation)) + scale_y_log10()
 }
