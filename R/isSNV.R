@@ -18,6 +18,6 @@ isSNV <- function(vcf) {
     if(!inherits(vcf,'VCF')) {
         stop('The isSimpleVariant function needs an object that inherits from the VCF class')
     }
-    altall = unlist(alt(vcf))[start(PartitioningByEnd(alt(vcf)))]
-    return((elementLengths(ref(vcf))==1) & (nchar(altall)==1))
+    altall = unlist(alt(vcf)[start(PartitioningByEnd(alt(vcf)))])
+    return((width(ref(vcf))==1) & (width(altall)==1))
 }

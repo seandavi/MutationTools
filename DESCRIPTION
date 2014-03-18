@@ -6,7 +6,12 @@ Date: 2014-02-09
 Author: Sean Davis
 Maintainer: Sean Davis <sdavis2@mail.nih.gov>
 Description: More about what it does (maybe more than one line)
+Roxygen: list(wrap = FALSE)
+Depends:
+    GenomicRanges
+Imports:
+    IRanges,
+    VariantAnnotation,
+    Rsamtools,
+    GenomicRanges
 License: GPL-3
-Collate:
-    'MutationTools-internal.R'
-    'isSNV.R'

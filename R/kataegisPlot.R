@@ -1,7 +1,7 @@
 #'
 #'
 #'
-#' @import Biostrings complement
+#' @importFrom Biostrings complement
 kataegisPlot <- function(vcf) {
     vcfsimple = vcf[isSNV(vcf)]
     d = distanceToPreviousVariant(vcfsimple)
