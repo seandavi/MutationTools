@@ -18,7 +18,7 @@ isSNV <- function(variants) {
 
     if(inherits(variants,'VCF')) {
         refall = as.character(ref(variants))
-        altall = as.character(unlist(alt(variants)[start(PartitioningByEnd(alt(variants)))]))
+        altall = as.character(unlist(alt(variants))[start(PartitioningByEnd(alt(variants)))])
         return((nchar(refall)==1) & (nchar(altall)==1))
     }
 
