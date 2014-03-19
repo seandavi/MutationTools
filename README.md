@@ -8,7 +8,7 @@ sequencing, with a particular focus on cancer mutation.
 There are a couple of choices.  Installation directly from github is possible using the `devtools` package:
 
     library(devtools)
-	install_github('MutationTools','seandavi')
+	install_github('seandavi/MutationTools')
 
 Or, install from my software repository using `biocLite`:
 
