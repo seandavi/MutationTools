@@ -70,7 +70,10 @@ setMethod('variantContext',c('VRanges','FaFile'),
     return(rowRanges)
 }
 
-doMatrix = function(vc) {
+doMatrix = function(vc,sampleName=NULL) {
+    if(!is.null(sampleName)) {
+        vc=vc[vc$sampleName %in% sampleName]
+    }
     allDNA=c('A','C','G','T')
     tmp = expand.grid(allDNA,allDNA,allDNA,c("A","C"),stringsAsFactors=FALSE)
     tmp = tmp[tmp[,2]!=tmp[,4],]
@@ -80,6 +83,21 @@ doMatrix = function(vc) {
         fromcolumn,tocolumn)
     rownames(df)=NULL
     t1 = table(as.character(vc$refContext),as.character(vc$altContext))
-    df$count = apply(df,1,function(x) {return(t1[x[4],x[5]])})
+    df$count = apply(df,1,function(x) {
+        if((x[4] %in% rownames(t1)) & (x[5] %in% colnames(t1))) {
+            return(t1[x[4],x[5]])
+        } else {
+            return(0)
+        }
+    })
     return(df)
+}
+
+plotVariantContext = function(vc) {
+    require(ggplot2)
+    ggplot(data=doMatrix(vc),
+           aes(x=context,y=count,fill=context)) +
+               geom_bar(stat='identity') +
+               facet_grid(to ~ from) +
+               theme(axis.text.x=element_text(angle=45,hjust=1))
 }
