@@ -101,3 +101,21 @@ plotVariantContext = function(vc) {
                facet_grid(to ~ from) +
                theme(axis.text.x=element_text(angle=45,hjust=1))
 }
+
+plotVariantOverview = function(sample,gene,type) {
+    df = data.frame(sample,gene,type)
+    mat = matrix(NA,nrow=length(unique(gene)),ncol=length(unique(sample)))
+    rownames(mat)=unique(gene)
+    colnames(mat)=unique(sample)
+    apply(df,1,function(x) {
+        mat[x[2],x[1]]=x[3]
+    })
+    image(mat)
+}
+
+sortForOncoprint = function(gene,sample) {
+    m = as.matrix(table(sample,gene)>0)*1
+    m = m[,order(colSums(m),decreasing=TRUE)]
+    m = m[do.call(order,as.data.frame(m)),]
+    return(m)
+}
