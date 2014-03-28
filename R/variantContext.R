@@ -70,7 +70,10 @@ setMethod('variantContext',c('VRanges','FaFile'),
     return(rowRanges)
 }
 
-doMatrix = function(vc) {
+doMatrix = function(vc,sampleName=NULL) {
+    if(!is.null(sampleName)) {
+        vc=vc[vc$sampleName %in% sampleName]
+    }
     allDNA=c('A','C','G','T')
     tmp = expand.grid(allDNA,allDNA,allDNA,c("A","C"),stringsAsFactors=FALSE)
     tmp = tmp[tmp[,2]!=tmp[,4],]
@@ -80,6 +83,39 @@ doMatrix = function(vc) {
         fromcolumn,tocolumn)
     rownames(df)=NULL
     t1 = table(as.character(vc$refContext),as.character(vc$altContext))
-    df$count = apply(df,1,function(x) {return(t1[x[4],x[5]])})
+    df$count = apply(df,1,function(x) {
+        if((x[4] %in% rownames(t1)) & (x[5] %in% colnames(t1))) {
+            return(t1[x[4],x[5]])
+        } else {
+            return(0)
+        }
+    })
     return(df)
+}
+
+plotVariantContext = function(vc) {
+    require(ggplot2)
+    ggplot(data=doMatrix(vc),
+           aes(x=context,y=count,fill=context)) +
+               geom_bar(stat='identity') +
+               facet_grid(to ~ from) +
+               theme(axis.text.x=element_text(angle=45,hjust=1))
+}
+
+plotVariantOverview = function(sample,gene,type) {
+    df = data.frame(sample,gene,type)
+    mat = matrix(NA,nrow=length(unique(gene)),ncol=length(unique(sample)))
+    rownames(mat)=unique(gene)
+    colnames(mat)=unique(sample)
+    apply(df,1,function(x) {
+        mat[x[2],x[1]]=x[3]
+    })
+    image(mat)
+}
+
+sortForOncoprint = function(gene,sample) {
+    m = as.matrix(table(sample,gene)>0)*1
+    m = m[,order(colSums(m),decreasing=TRUE)]
+    m = m[do.call(order,as.data.frame(m)),]
+    return(m)
 }
